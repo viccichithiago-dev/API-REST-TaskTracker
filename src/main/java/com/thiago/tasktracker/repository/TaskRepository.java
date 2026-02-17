@@ -9,4 +9,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     // Task save(Task task);
     // void deleteById(Long id);
     // Puedes agregar métodos personalizados si es necesario
+    // Actualizar una tarea
 }

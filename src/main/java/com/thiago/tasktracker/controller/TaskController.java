@@ -26,5 +26,12 @@ public class TaskController { // Controlador para manejar las solicitudes relaci
     public void deleteTask(@PathVariable Long id) { // Método para eliminar una tarea a partir de su ID proporcionada en la ruta
         taskService.deleteTask(id); // Llama al servicio para eliminar la tarea con el ID especificado
     }
-
+    @PutMapping("/{id}") // Anotación para manejar solicitudes PUT (actualizar una tarea por su ID)
+    public Task updateTask(@PathVariable Long id, @RequestBody TaskRequest taskRequest) { // Método para actualizar una tarea a partir de su ID y la nueva descripción y estado proporcionados en el cuerpo de la solicitud
+        return taskService.updateTask(id, taskRequest.getDescription()); // Llama al servicio para actualizar la tarea con el ID especificado y devuelve la tarea actualizada
+    }
+    @GetMapping("/{id}") // Anotación para manejar solicitudes GET con parámetros de consulta (buscar tareas por ID)
+    public Task getTaskById(@PathVariable Long id) { // Método para obtener una tarea por su ID
+        return taskService.getTaskById(id); // Llama al servicio para obtener la tarea con el ID especificado y devuelve la tarea
+    }
 }
