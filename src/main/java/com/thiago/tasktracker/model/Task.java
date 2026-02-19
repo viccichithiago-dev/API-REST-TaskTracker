@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
+
 
 @Getter
 @Setter
@@ -13,6 +17,9 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Size(min = 3, max = 50, message = "Debe tener entre 3 y 50 caracteres")
+    @Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "Solo se permiten letras y números")
+    @NotBlank(message = "La descripción no puede estar vacía")
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
