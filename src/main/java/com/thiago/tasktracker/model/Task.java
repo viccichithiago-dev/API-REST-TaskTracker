@@ -4,9 +4,6 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.Pattern;
 
 
 @Getter
@@ -17,13 +14,13 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Size(min = 3, max = 50, message = "Debe tener entre 3 y 50 caracteres")
-    @Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "Solo se permiten letras y números")
-    @NotBlank(message = "La descripción no puede estar vacía")
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private boolean completed;
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
+    @Enumerated(EnumType.STRING)
+    private TaskPriority priority;
 
     public Task() {}
 
@@ -31,15 +28,23 @@ public class Task {
         this.description = description;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-        this.completed = false;
+        this.status = TaskStatus.PENDIENTE;
+        this.priority = TaskPriority.MEDIA;
     }
     // getters y setters generados por Lombok
+    public void setPriority(TaskPriority priority) {
+        this.priority = priority;
+        this.updatedAt = LocalDateTime.now();
+    }
+    public TaskPriority getPriority() {
+        return priority;
+    }
     public void setDescription(String description) {
         this.description = description;
         this.updatedAt = LocalDateTime.now();
     }
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
+    public void setStatus(TaskStatus status) {
+        this.status = status;
         this.updatedAt = LocalDateTime.now();
     }
     public void setUpdatedAt(LocalDateTime updatedAt) {
@@ -58,7 +63,7 @@ public class Task {
         return createdAt;
     }
     public boolean isCompleted() {
-        return completed;
+        return status == TaskStatus.TERMINADA;
     }
     public void setId(Long id) {
         this.id = id;
