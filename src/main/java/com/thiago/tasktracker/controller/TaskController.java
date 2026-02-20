@@ -1,13 +1,18 @@
 package com.thiago.tasktracker.controller;
 
 import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+
 import com.thiago.tasktracker.dto.TaskRequest;
+import com.thiago.tasktracker.dto.UpdateTaskStatusRequest;
 
 import org.springframework.web.bind.annotation.*;
 
 import com.thiago.tasktracker.model.Task;
 import com.thiago.tasktracker.service.TaskService;
 
+import jakarta.persistence.Entity;
 import jakarta.validation.Valid;
 @RestController // Anotación para indicar que esta clase es un controlador REST
 @RequestMapping("/tasks") // Ruta base para todas las operaciones relacionadas con tareas
@@ -36,4 +41,9 @@ public class TaskController { // Controlador para manejar las solicitudes relaci
     public Task getTaskById(@PathVariable Long id) { // Método para obtener una tarea por su ID
         return taskService.getTaskById(id); // Llama al servicio para obtener la tarea con el ID especificado y devuelve la tarea
     }
+    @PatchMapping("/{id}/status") // Anotación para manejar solicitudes PATCH (actualizar el estado de una tarea por su ID)
+    public ResponseEntity<Task> updateTaskStatus(@PathVariable Long id, @RequestBody UpdateTaskStatusRequest request) { // Método para actualizar el estado de una tarea a partir de su ID y el nuevo estado proporcionados en el cuerpo de la solicitud
+        Task updatedTask = taskService.updateTaskStatus(id, request.getStatus()); // Llama al servicio para actualizar el estado de la tarea con el ID especificado y devuelve la tarea actualizada
+        return ResponseEntity.ok(updatedTask); // Devuelve la tarea actualizada con un código de estado HTTP 200 OK
+    }   
 }

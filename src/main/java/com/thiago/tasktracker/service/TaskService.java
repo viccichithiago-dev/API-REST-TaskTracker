@@ -2,7 +2,7 @@ package com.thiago.tasktracker.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-
+import com.thiago.tasktracker.model.TaskStatus;
 import com.thiago.tasktracker.model.Task;
 import com.thiago.tasktracker.repository.TaskRepository;
 
@@ -29,5 +29,10 @@ public class TaskService {
     }
     public Task getTaskById(Long id) {
         return taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
+    }
+    public Task updateTaskStatus(Long id, TaskStatus status) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
+        task.setStatus(status);
+        return taskRepository.save(task);
     }
 }
