@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class TaskRequest {
     @Size(min = 3, max = 50, message = "Debe tener entre 3 y 50 caracteres")
-    @Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "Solo se permiten letras y números")
+   @Pattern(regexp = "^[\\p{L}0-9 .,-]+$",message = "Solo letras, números y signos básicos")
     @NotBlank(message = "La descripción no puede estar vacía")
     private String description;
 
