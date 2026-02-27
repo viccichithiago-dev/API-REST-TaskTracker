@@ -7,6 +7,7 @@ import com.thiago.tasktracker.model.Task;
 import com.thiago.tasktracker.repository.TaskRepository;
 import com.thiago.tasktracker.dto.TaskRequest;
 import com.thiago.tasktracker.dto.TaskResponse;
+import com.thiago.tasktracker.exception.*;
 
 @Service
 public class TaskService {
@@ -29,23 +30,22 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
     public TaskResponse updateTask(Long id, String description) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
         task.setDescription(description);
         Task updatedTask = taskRepository.save(task);
         return mapToResponse(updatedTask);
     }
     public TaskResponse getTaskById(Long id) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
         return mapToResponse(task);
     }
     public TaskResponse updateTaskStatus(Long id, TaskStatus status) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
         task.setStatus(status);
         Task updatedTask = taskRepository.save(task);
         return mapToResponse(updatedTask);
     }
     private TaskResponse mapToResponse(Task task) {
     return new TaskResponse(task.getId(),task.getDescription(),task.getStatus(),task.getPriority(),task.getCreatedAt(),task.getUpdatedAt());
-    
     }
 }
