@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 import com.thiago.tasktracker.model.Task;
 import com.thiago.tasktracker.service.TaskService;
+import com.thiago.tasktracker.dto.TaskResponse;
 
 import jakarta.persistence.Entity;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 @RestController // Anotación para indicar que esta clase es un controlador REST
 @RequestMapping("/tasks") // Ruta base para todas las operaciones relacionadas con tareas
 public class TaskController { // Controlador para manejar las solicitudes relacionadas con las tareas
@@ -22,8 +26,8 @@ public class TaskController { // Controlador para manejar las solicitudes relaci
         this.taskService = taskService;
     }
     @PostMapping // Anotación para manejar solicitudes POST (crear una nueva tarea)
-    public Task createTask(@Valid @RequestBody TaskRequest taskRequest) { // Método para crear una nueva tarea a partir de la descripción proporcionada en el cuerpo de la solicitud
-        return taskService.createTask(taskRequest.getDescription()); // Llama al servicio para crear la tarea y devuelve la tarea creada
+    public TaskResponse createTask(@Valid @RequestBody TaskRequest taskRequest) { // Método para crear una nueva tarea a partir de la descripción proporcionada en el cuerpo de la solicitud
+        return taskService.createTask(taskRequest); // Llama al servicio para crear la tarea y devuelve la tarea creada
     }
     @GetMapping // Anotación para manejar solicitudes GET (obtener todas las tareas)
     public List<Task> getAllTasks() { // Método para obtener todas las tareas

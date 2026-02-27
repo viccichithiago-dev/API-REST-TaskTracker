@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import com.thiago.tasktracker.model.TaskStatus;
 import com.thiago.tasktracker.model.Task;
 import com.thiago.tasktracker.repository.TaskRepository;
+import com.thiago.tasktracker.dto.TaskRequest;
+import com.thiago.tasktracker.dto.TaskResponse;
 
 @Service
 public class TaskService {
@@ -12,9 +14,10 @@ public class TaskService {
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
     }
-    public Task createTask(String description) {
-        Task task = new Task(description);
-        return taskRepository.save(task);
+    public TaskResponse createTask(TaskRequest taskRequest) {
+        Task task = new Task(taskRequest.getDescription());
+        Task savedTask = taskRepository.save(task);
+        return new TaskResponse(savedTask.getId(), savedTask.getDescription(), savedTask.getStatus(), savedTask.getCreatedAt(), savedTask.getUpdatedAt());
     }
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
@@ -34,5 +37,8 @@ public class TaskService {
         Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
         task.setStatus(status);
         return taskRepository.save(task);
+    }
+    private TaskResponse mapToResponse(Task task) {
+    return new TaskResponse(task.getId(),task.getDescription(),task.getStatus(),task.getCreatedAt(),task.getUpdatedAt());
     }
 }

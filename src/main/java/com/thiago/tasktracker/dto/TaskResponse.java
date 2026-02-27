@@ -1,35 +1,26 @@
-package com.thiago.tasktracker.model;
-
+package com.thiago.tasktracker.dto;
 import java.time.LocalDateTime;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
+import com.thiago.tasktracker.model.TaskPriority;
+import com.thiago.tasktracker.model.TaskStatus;
 
-@Getter
-@Setter
-@Entity
-public class Task {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class TaskResponse { // Clase encargada de representar la respuesta de una tarea, con todos sus atributos
     private Long id;
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    @Enumerated(EnumType.STRING)
     private TaskStatus status;
-    @Enumerated(EnumType.STRING)
     private TaskPriority priority;
 
-    public Task() {}
+    public TaskResponse() {}
 
-    public Task(String description) {
+    public TaskResponse(Long id, String description, TaskStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.description = description;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-        this.status = TaskStatus.PENDIENTE;
-        this.priority = TaskPriority.MEDIA;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.status = status;
+        this.priority = priority;
     }
     // getters y setters generados por Lombok
     public void setPriority(TaskPriority priority) {
@@ -46,9 +37,6 @@ public class Task {
     public void setStatus(TaskStatus status) {
         this.status = status;
         this.updatedAt = LocalDateTime.now();
-    }
-    public TaskStatus getStatus() {
-        return status;
     }
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
