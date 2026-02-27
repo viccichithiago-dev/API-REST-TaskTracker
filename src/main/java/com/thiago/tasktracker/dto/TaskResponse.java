@@ -14,13 +14,13 @@ public class TaskResponse { // Clase encargada de representar la respuesta de un
 
     public TaskResponse() {}
 
-    public TaskResponse(Long id, String description, TaskStatus status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public TaskResponse(Long id, String description, TaskStatus status, TaskPriority priority, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.description = description;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.status = status;
         this.priority = priority;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
     // getters y setters generados por Lombok
     public void setPriority(TaskPriority priority) {
@@ -37,6 +37,9 @@ public class TaskResponse { // Clase encargada de representar la respuesta de un
     public void setStatus(TaskStatus status) {
         this.status = status;
         this.updatedAt = LocalDateTime.now();
+    }
+    public TaskStatus getStatus() {
+        return status;
     }
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;

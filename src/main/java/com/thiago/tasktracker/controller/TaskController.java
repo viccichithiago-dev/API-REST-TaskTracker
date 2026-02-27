@@ -30,7 +30,7 @@ public class TaskController { // Controlador para manejar las solicitudes relaci
         return taskService.createTask(taskRequest); // Llama al servicio para crear la tarea y devuelve la tarea creada
     }
     @GetMapping // Anotación para manejar solicitudes GET (obtener todas las tareas)
-    public List<Task> getAllTasks() { // Método para obtener todas las tareas
+    public List<TaskResponse> getAllTasks() { // Método para obtener todas las tareas
         return taskService.getAllTasks(); // Llama al servicio para obtener todas las tareas y devuelve la lista de tareas
     }
     @DeleteMapping("/{id}") // Anotación para manejar solicitudes DELETE (eliminar una tarea por su ID)
@@ -38,16 +38,16 @@ public class TaskController { // Controlador para manejar las solicitudes relaci
         taskService.deleteTask(id); // Llama al servicio para eliminar la tarea con el ID especificado
     }
     @PutMapping("/{id}") // Anotación para manejar solicitudes PUT (actualizar una tarea por su ID)
-    public Task updateTask(@PathVariable Long id, @RequestBody TaskRequest taskRequest) { // Método para actualizar una tarea a partir de su ID y la nueva descripción y estado proporcionados en el cuerpo de la solicitud
+    public TaskResponse updateTask(@PathVariable Long id, @RequestBody TaskRequest taskRequest) { // Método para actualizar una tarea a partir de su ID y la nueva descripción y estado proporcionados en el cuerpo de la solicitud
         return taskService.updateTask(id, taskRequest.getDescription()); // Llama al servicio para actualizar la tarea con el ID especificado y devuelve la tarea actualizada
     }
     @GetMapping("/{id}") // Anotación para manejar solicitudes GET con parámetros de consulta (buscar tareas por ID)
-    public Task getTaskById(@PathVariable Long id) { // Método para obtener una tarea por su ID
+    public TaskResponse getTaskById(@PathVariable Long id) { // Método para obtener una tarea por su ID
         return taskService.getTaskById(id); // Llama al servicio para obtener la tarea con el ID especificado y devuelve la tarea
     }
     @PatchMapping("/{id}/status") // Anotación para manejar solicitudes PATCH (actualizar el estado de una tarea por su ID)
-    public ResponseEntity<Task> updateTaskStatus(@PathVariable Long id, @RequestBody UpdateTaskStatusRequest request) { // Método para actualizar el estado de una tarea a partir de su ID y el nuevo estado proporcionados en el cuerpo de la solicitud
-        Task updatedTask = taskService.updateTaskStatus(id, request.getStatus()); // Llama al servicio para actualizar el estado de la tarea con el ID especificado y devuelve la tarea actualizada
+    public ResponseEntity<TaskResponse> updateTaskStatus(@PathVariable Long id, @RequestBody UpdateTaskStatusRequest request) { // Método para actualizar el estado de una tarea a partir de su ID y el nuevo estado proporcionados en el cuerpo de la solicitud
+        TaskResponse updatedTask = taskService.updateTaskStatus(id, request.getStatus()); // Llama al servicio para actualizar el estado de la tarea con el ID especificado y devuelve la tarea actualizada
         return ResponseEntity.ok(updatedTask); // Devuelve la tarea actualizada con un código de estado HTTP 200 OK
     }   
 }

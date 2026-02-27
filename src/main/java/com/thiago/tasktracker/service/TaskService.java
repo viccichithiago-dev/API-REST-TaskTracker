@@ -17,28 +17,35 @@ public class TaskService {
     public TaskResponse createTask(TaskRequest taskRequest) {
         Task task = new Task(taskRequest.getDescription());
         Task savedTask = taskRepository.save(task);
-        return new TaskResponse(savedTask.getId(), savedTask.getDescription(), savedTask.getStatus(), savedTask.getCreatedAt(), savedTask.getUpdatedAt());
+        return mapToResponse(savedTask);
     }
-    public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+    public List<TaskResponse> getAllTasks() {
+        return taskRepository.findAll() // Obtiene todas las tareas de la base de datos utilizando el repositorio
+        .stream() // Convierte la lista de tareas en un flujo para poder aplicar operaciones funcionales
+        .map(this::mapToResponse) // Mapea cada tarea a un objeto TaskResponse utilizando el método mapToResponse
+        .toList(); // Convierte el flujo de TaskResponse de nuevo a una lista y la devuelve
     }
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
     }
-    public Task updateTask(Long id, String description) {
+    public TaskResponse updateTask(Long id, String description) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
         task.setDescription(description);
-        return taskRepository.save(task);
+        Task updatedTask = taskRepository.save(task);
+        return mapToResponse(updatedTask);
     }
-    public Task getTaskById(Long id) {
-        return taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
+    public TaskResponse getTaskById(Long id) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
+        return mapToResponse(task);
     }
-    public Task updateTaskStatus(Long id, TaskStatus status) {
+    public TaskResponse updateTaskStatus(Long id, TaskStatus status) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new RuntimeException("Task not found"));
         task.setStatus(status);
-        return taskRepository.save(task);
+        Task updatedTask = taskRepository.save(task);
+        return mapToResponse(updatedTask);
     }
     private TaskResponse mapToResponse(Task task) {
-    return new TaskResponse(task.getId(),task.getDescription(),task.getStatus(),task.getCreatedAt(),task.getUpdatedAt());
+    return new TaskResponse(task.getId(),task.getDescription(),task.getStatus(),task.getPriority(),task.getCreatedAt(),task.getUpdatedAt());
+    
     }
 }
