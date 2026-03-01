@@ -3,7 +3,8 @@ import java.time.LocalDateTime;
 
 import com.thiago.tasktracker.model.TaskPriority;
 import com.thiago.tasktracker.model.TaskStatus;
-
+import io.swagger.v3.oas.annotations.media.Schema;
+@Schema(description = "Respuesta de una tarea, con todos sus atributos") // Anotación para describir la clase en la documentación de la API
 public class TaskResponse { // Clase encargada de representar la respuesta de una tarea, con todos sus atributos
     private Long id;
     private String description;
