@@ -8,6 +8,8 @@ import com.thiago.tasktracker.repository.TaskRepository;
 import com.thiago.tasktracker.dto.TaskRequest;
 import com.thiago.tasktracker.dto.TaskResponse;
 import com.thiago.tasktracker.exception.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class TaskService {
@@ -20,11 +22,8 @@ public class TaskService {
         Task savedTask = taskRepository.save(task);
         return mapToResponse(savedTask);
     }
-    public List<TaskResponse> getAllTasks() {
-        return taskRepository.findAll() // Obtiene todas las tareas de la base de datos utilizando el repositorio
-        .stream() // Convierte la lista de tareas en un flujo para poder aplicar operaciones funcionales
-        .map(this::mapToResponse) // Mapea cada tarea a un objeto TaskResponse utilizando el método mapToResponse
-        .toList(); // Convierte el flujo de TaskResponse de nuevo a una lista y la devuelve
+    public Page<TaskResponse> getAllTasks(Pageable pageable) {
+        return taskRepository.findAll(pageable).map(this::mapToResponse); // Esta linea usando o método map para converter cada Task em TaskResponse usando o método mapToResponse.
     }
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
@@ -47,5 +46,14 @@ public class TaskService {
     }
     private TaskResponse mapToResponse(Task task) {
     return new TaskResponse(task.getId(),task.getDescription(),task.getStatus(),task.getPriority(),task.getCreatedAt(),task.getUpdatedAt());
+    }
+    public Page<TaskResponse> getTasks(TaskStatus status, Pageable pageable) {
+        Page<Task> tasks;
+        if (status != null) {
+            tasks = taskRepository.findByStatus(status, pageable);
+        } else {
+            tasks = taskRepository.findAll(pageable);
+        }
+        return tasks.map(this::mapToResponse);
     }
 }

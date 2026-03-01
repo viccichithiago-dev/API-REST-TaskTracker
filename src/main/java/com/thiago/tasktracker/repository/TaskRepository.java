@@ -1,5 +1,8 @@
 package com.thiago.tasktracker.repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import com.thiago.tasktracker.model.TaskStatus;
 
 import com.thiago.tasktracker.model.Task;
 public interface TaskRepository extends JpaRepository<Task, Long> {
@@ -10,4 +13,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     // void deleteById(Long id);
     // Puedes agregar métodos personalizados si es necesario
     // Actualizar una tarea
+    Page<Task> findByStatus(TaskStatus status, Pageable pageable);
 }
