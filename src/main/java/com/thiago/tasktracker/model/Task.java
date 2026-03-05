@@ -21,6 +21,9 @@ public class Task {
     private TaskStatus status;
     @Enumerated(EnumType.STRING)
     private TaskPriority priority;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Task() {}
 
